@@ -8,7 +8,6 @@ from torchvision import transforms, models
 from sklearn.metrics import accuracy_score
 import multiprocessing
 
-# Check if CUDA is available
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 class PneumoniaDataset(Dataset):
@@ -38,10 +37,8 @@ class PneumoniaDataset(Dataset):
         return image, label
 
 if __name__ == '__main__':
-    # Required for multiprocessing on Windows
     multiprocessing.freeze_support()
 
-    # Define data transformations
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.ToTensor(),
@@ -53,17 +50,14 @@ if __name__ == '__main__':
     test_dataset = PneumoniaDataset(root_dir='data/test', transform=transform)
     val_dataset = PneumoniaDataset(root_dir='data/val', transform=transform)
 
-    # Use DataLoader with multiprocessing (num_workers > 0)
     train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True, num_workers=6, pin_memory=True)
     test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False, num_workers=6, pin_memory=True)
     val_loader = DataLoader(val_dataset, batch_size=64, shuffle=False, num_workers=6, pin_memory=True)
 
-    # Define the model (ResNet18)
     model = models.resnet18(weights=models.ResNet18_Weights.IMAGENET1K_V1)
     model.fc = nn.Linear(model.fc.in_features, 2)  # NORMAL and PNEUMONIA classes
     model = model.to(device)
 
-    # Loss function and optimizer
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
 
@@ -126,5 +120,4 @@ if __name__ == '__main__':
     test_accuracy = accuracy_score(test_labels, test_preds)
     print('Test accuracy: ', test_accuracy)
 
-    # Save the trained model
     torch.save(model.state_dict(), 'pneumonia_classifier.pth')

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pneumonia Classifier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #2c2c2c; /* Dark gray background */
+            color: #f4f4f4; /* Light text */
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #ffffff; /* White text title */
+            margin-top: 20px;
+        }
+
+        p {
+            color: #cccccc; /* Light gray subtext */
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #3c3c3c; /* lighter gray container */
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5); /* shadow */
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input[type="file"] {
+            display: block;
+            margin: 20px auto;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF; /* Blue button */
+            color: white; /* White text button */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Darker blue hover */
+        }
+
+        .image-preview {
+            margin-top: 20px;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+        }
+
+        #prediction {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffffff; /* White text predictions */
+        }
+
+        .loading-spinner {
+            display: none; /* Hidden by default */
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pneumonia Classifier</h1>
+        <p>Upload an X-ray image to check for pneumonia.</p>
+        
+        <form id="upload-form" enctype="multipart/form-data">
+            <input type="file" name="image" id="image-input" accept="image/*">
+            <button type="submit">Upload & Predict</button>
+        </form>
+
+        <div class="image-preview" id="image-preview">
+            <p>No image uploaded yet.</p>
+        </div>
+
+        <div class="loading-spinner" id="loading-spinner">
+            <p>Processing...</p>
+        </div>
+
+        <!-- Prediction Result -->
+        <div id="prediction"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('upload-form');
+        const imageInput = document.getElementById('image-input');
+        const imagePreview = document.getElementById('image-preview');
+        const predictionDiv = document.getElementById('prediction');
+        const loadingSpinner = document.getElementById('loading-spinner');
+
+        imageInput.addEventListener('change', () => {
+            const file = imageInput.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imagePreview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
+                };
+                reader.readAsDataURL(file);
+                predictionDiv.innerText = ""; // Clear previous predictions
+            } else {
+                imagePreview.innerHTML = "<p>No image uploaded yet.</p>";
+                predictionDiv.innerText = ""; // Clear previous predictions
+            }
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!imageInput.files.length) {
+                predictionDiv.innerText = "Please upload an image.";
+                return;
+            }
+
+            loadingSpinner.style.display = "block";
+            
+            const formData = new FormData();
+            formData.append('image', imageInput.files[0]);
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const data = await response.json();
+                
+                loadingSpinner.style.display = "none";
+
+                predictionDiv.innerText = `Prediction: ${data.prediction}`;
+                
+                predictionDiv.scrollIntoView({ behavior: 'smooth' });
+                
+            } catch (error) {
+                console.error("Error:", error);
+                predictionDiv.innerText = "An error occurred while processing your request.";
+                
+                loadingSpinner.style.display = "none";
+                
+                return false; 
+           }
+       });
+    </script>
+</body>
+</html>
