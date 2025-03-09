@@ -81,7 +81,7 @@ The Flask application (`app.py`) provides a web interface for users to upload X-
 
 The application is deployed on Railway.app.
 
-**Warning:** This application is deployed on Railway.app using the free tier. As such, the web application might experience slower response times or occasional errors due to resource limitations. Users are welcome to clone the repository and deploy the application using their own infrastructure (e.g., a local machine or a different cloud provider) for improved performance. The steps for local deployment are provided below.
+**Warning:** This application is deployed on Railway.app using the free tier. As such, the web application might experience slower response times or occasional errors due to resource limitations. Users are welcome to clone the repository and deploy the application using their own infrastructure (e.g., a local machine or a different cloud provider) for improved performance.
 
 
 ## Viewing the Web Interface
