@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project develops a pneumonia classifier using PyTorch.  It analyzes chest X-ray images to predict whether a patient has pneumonia or does not. The project uses a pre-trained ResNet18 model, fine-tuned on a publicly available chest X-ray dataset, and deploys a Flask web application to provide an easy-to-use interface for uploading images and receiving predictions.  The application is deployed on Railway.app for accessibility - https://web-production-b5fa5.up.railway.app/.
+This project develops a pneumonia classifier using PyTorch.  It analyzes chest X-ray images to predict whether a patient has pneumonia or does not. The project uses a pre-trained ResNet18 model, fine-tuned on a publicly available chest X-ray dataset, and deploys a Flask web application to provide an easy-to-use interface for uploading images and receiving predictions.
 
 ## Dataset
 
@@ -77,16 +77,9 @@ The Flask application (`app.py`) provides a web interface for users to upload X-
 2.  **Prediction:** The uploaded image is preprocessed and fed into the trained ResNet18 model. The model outputs a prediction (NORMAL or PNEUMONIA).
 3.  **Display:** The prediction is displayed to the user through the web interface.
 
-## Deployment on Railway.app
-
-The application is deployed on Railway.app.
-
-**Warning:** This application is deployed on Railway.app using the free tier. As such, the web application might experience slower response times or occasional errors due to resource limitations. Users are welcome to clone the repository and deploy the application using their own infrastructure (e.g., a local machine or a different cloud provider) for improved performance.
-
-
 ## Viewing the Web Interface
 
-You can view the live application on Railway at https://web-production-b5fa5.up.railway.app/.
+Run the Flask application locally by executing app.py, then open your browser at the specified local address to interact with the classifier.
 
 ## Future Improvements
 
