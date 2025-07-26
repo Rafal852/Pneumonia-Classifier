@@ -77,6 +77,10 @@ The Flask application (`app.py`) provides a web interface for users to upload X-
 2.  **Prediction:** The uploaded image is preprocessed and fed into the trained ResNet18 model. The model outputs a prediction (NORMAL or PNEUMONIA).
 3.  **Display:** The prediction is displayed to the user through the web interface.
 
+
+https://github.com/user-attachments/assets/247ccc44-dfef-4c5f-83d3-52d7365e8a20
+
+
 ## Viewing the Web Interface
 
 Run the Flask application locally by executing app.py, then open your browser at the specified local address to interact with the classifier.
